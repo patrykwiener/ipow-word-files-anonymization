@@ -10,4 +10,9 @@
     <PackageReference Include="MaterialDesignThemes" Version="3.2.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\..\docx\Xceed.Document.NET\Xceed.Document.NET.csproj" />
+    <ProjectReference Include="..\..\docx\Xceed.Words.NET\Xceed.Words.NET.csproj" />
+  </ItemGroup>
+
 </Project>

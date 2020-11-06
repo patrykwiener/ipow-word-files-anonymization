@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Xceed.Words.NET;
 
 namespace IPOW
 {
@@ -29,7 +30,7 @@ namespace IPOW
 
         private void choose_button_Click(object sender, RoutedEventArgs e)
         {
-         
+
             OpenFileDialog openFileDialog = new OpenFileDialog();
 
             openFileDialog.InitialDirectory = "c:\\";
@@ -39,13 +40,40 @@ namespace IPOW
 
             if (openFileDialog.ShowDialog() == true)
             {
-                //Read the contents of the file into a stream
-                var fileStream = openFileDialog.OpenFile();
-                
-                using (StreamReader reader = new StreamReader(fileStream))
+                object readOnly = false;
+                object visible = false;
+                object save = false;
+                string fileName = openFileDialog.FileName;
+
+                /**object newTemplate = false;
+                object docType = 0;
+                object missing = Type.Missing;
+                Microsoft.Office.Interop.Word._Document document;
+                Microsoft.Office.Interop.Word._Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
+                document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
+                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
+                document.ActiveWindow.Selection.WholeStory();
+                document.ActiveWindow.Selection.Copy();
+
+                IDataObject dataObject = Clipboard.GetDataObject();**/
+                string content;
+
+                using (DocX document = DocX.Load(fileName))
                 {
-                    var fileContent = reader.ReadToEnd();
+                    // Make sure this document has at least one Image.
+                    content = document.Text;
+
+                    // Save this document as Output.docx.
+                    //document.SaveAs("Output.docx");
                 }
+
+                using (System.IO.StreamWriter file =
+                    new System.IO.StreamWriter("E:/Programowanie/dotnet/WriteLines2.txt"))
+                {
+                    file.WriteLine(content);
+                }
+
+                //application.Quit(ref missing, ref missing, ref missing);
             }
         }
     }
