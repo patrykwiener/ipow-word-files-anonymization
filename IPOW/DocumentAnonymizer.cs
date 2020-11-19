@@ -1,22 +1,30 @@
-﻿using IPOW.anonymize_actions;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
+using Xceed.Words.NET;
 
 namespace IPOW
 {
     public class DocumentAnonymizer
     {
+        private DocX doc;
+        private string replacement;
 
-        public string anonymize(string content, string replacement)
+        public DocumentAnonymizer(DocX doc, string replacement = "***")
         {
-            content = anonymizePesel(content, replacement);
-            return content;
+            this.doc = doc;
+            this.replacement = replacement;
         }
 
-        private string anonymizePesel(string content, string replacement)
+        public void AnonymizeWithPattern(string pattern)
         {
-            return new PeselAnonymizeAction().execute(content, replacement);
+            this.doc.ReplaceText(pattern, _ => replacement);
+        }
+        
+        public void AnonymizeWithPatterns(List<string> patterns)
+        {
+            foreach (string pattern in patterns)
+            {
+                this.AnonymizeWithPattern(pattern);
+            }
         }
 
     }

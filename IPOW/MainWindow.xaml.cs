@@ -14,7 +14,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Xceed.Words.NET;
 
 namespace IPOW
 {
@@ -23,58 +22,61 @@ namespace IPOW
     /// </summary>
     public partial class MainWindow : Window
     {
+
+        private readonly Dictionary<CheckBox, string> checkboxMappings;
+
         public MainWindow()
         {
             InitializeComponent();
+            runButton.IsEnabled = false;
+            checkboxMappings = new Dictionary<CheckBox, string>()
+            {
+                { peselCheckbox, PatternsModel.PESEL },
+                { birthDateCheckbox, PatternsModel.BIRTH_DATE},
+                { emailCheckbox, PatternsModel.EMAIL},
+                { phoneNoCheckbox, PatternsModel.PHONE_NUMBER},
+            };
+
         }
 
-        private void choose_button_Click(object sender, RoutedEventArgs e)
+        private void ChooseButtonClick(object sender, RoutedEventArgs e)
         {
 
-            OpenFileDialog openFileDialog = new OpenFileDialog();
-
-            openFileDialog.InitialDirectory = "c:\\";
-            openFileDialog.Filter = "All files (*.*)|*.*|Word files (*.docx)|*.docx";
-            openFileDialog.FilterIndex = 2;
-            openFileDialog.RestoreDirectory = true;
+            OpenFileDialog openFileDialog = new OpenFileDialog
+            {
+                InitialDirectory = "c:\\Development\\C#\\",
+                Filter = "All files (*.*)|*.*|Word files (*.docx)|*.docx",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
 
             if (openFileDialog.ShowDialog() == true)
             {
-                object readOnly = false;
-                object visible = false;
-                object save = false;
                 string fileName = openFileDialog.FileName;
-
-                /**object newTemplate = false;
-                object docType = 0;
-                object missing = Type.Missing;
-                Microsoft.Office.Interop.Word._Document document;
-                Microsoft.Office.Interop.Word._Application application = new Microsoft.Office.Interop.Word.Application() { Visible = false };
-                document = application.Documents.Open(ref fileName, ref missing, ref readOnly, ref missing, ref missing, ref missing,
-                    ref missing, ref missing, ref missing, ref missing, ref missing, ref visible, ref missing, ref missing, ref missing, ref missing);
-                document.ActiveWindow.Selection.WholeStory();
-                document.ActiveWindow.Selection.Copy();
-
-                IDataObject dataObject = Clipboard.GetDataObject();**/
-                string content;
-
-                using (DocX document = DocX.Load(fileName))
-                {
-                    // Make sure this document has at least one Image.
-                    content = document.Text;
-
-                    // Save this document as Output.docx.
-                    //document.SaveAs("Output.docx");
-                }
-
-                using (System.IO.StreamWriter file =
-                    new System.IO.StreamWriter("E:/Programowanie/dotnet/WriteLines2.txt"))
-                {
-                    file.WriteLine(content);
-                }
-
-                //application.Quit(ref missing, ref missing, ref missing);
+                fileTextbox.Text = fileName;
+                runButton.IsEnabled = true;
             }
+        }
+
+        private List<string> GetSelectedOptionsPatterns()
+        {
+            List<string> patterns = new List<string>();
+            foreach (KeyValuePair<CheckBox, string> mapping in this.checkboxMappings)
+            {
+                if (mapping.Key.IsChecked == true)
+                {
+                    patterns.Add(mapping.Value);
+                }
+            }
+            return patterns;
+        }
+
+        private void RunButtonClick(object sender, RoutedEventArgs e)
+        {
+            List<string> patterns = this.GetSelectedOptionsPatterns();
+            AnonymizationManager.AnonymizeWithSave(fileTextbox.Text, patterns, "C:\\Development\\C#\\test.docx");
+            fileTextbox.Text = "";
+            runButton.IsEnabled = false;
         }
     }
 }
