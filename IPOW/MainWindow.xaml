@@ -13,7 +13,7 @@
         TextOptions.TextRenderingMode="Auto"
         Background="{DynamicResource MaterialDesignPaper}"
         FontFamily="{DynamicResource MaterialDesignFont}"
-        Title="Word Files Anonymization" Height="450" Width="800">    
+        Title="Word Files Anonymization" Height="450" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
@@ -28,7 +28,7 @@
             <ColumnDefinition Width="12*" />
             <ColumnDefinition Width="1*" />
         </Grid.ColumnDefinitions>
-        
+
         <Grid Grid.Row="1" Grid.Column="1">
             <Grid.RowDefinitions>
                 <RowDefinition Height="5*"/>
@@ -76,8 +76,11 @@
                 <ColumnDefinition Width="4*" />
                 <ColumnDefinition Width="1*" />
             </Grid.ColumnDefinitions>
-            <Button Grid.Row="1" Grid.Column="2" Name="runButton" Click="RunButtonClick">Run</Button>
+            <CheckBox x:Name="customTargetCheckbox" Click="CustomSaveCheckboxClick" Content="Custom save destination" Margin="37,0,231,52" RenderTransformOrigin="0.5,0.5" Grid.ColumnSpan="2" Grid.Row="1"/>
+            <TextBox Grid.Row="1" Grid.Column="1" Name="fileTargetTextbox" IsReadOnly="True" materialDesign:HintAssist.Hint="Choose file" Height="25px" Margin="0,20,20,0"></TextBox>
+            <Button Grid.Row="1" Grid.Column="2" Name="chooseDestButton" Click="ChooseDestButtonClick" Visibility="Visible" Margin="0,20,0,0">Choose target</Button>
+            <Button Grid.Row="2" Grid.Column="1" Name="runButton" Click="RunButtonClick" Grid.ColumnSpan="3" Margin="463,32,37,-48">Run</Button>
         </Grid>
-        
+
     </Grid>
 </Window>

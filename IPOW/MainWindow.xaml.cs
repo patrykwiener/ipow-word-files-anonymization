@@ -25,6 +25,7 @@ namespace IPOW
 
         private readonly Dictionary<CheckBox, string> checkboxMappings;
 
+
         public MainWindow()
         {
             InitializeComponent();
@@ -37,6 +38,9 @@ namespace IPOW
                 { phoneNoCheckbox, PatternsModel.PHONE_NUMBER},
             };
 
+            customTargetCheckbox.IsChecked = false;
+            fileTargetTextbox.Visibility = Visibility.Hidden;
+            chooseDestButton.Visibility = Visibility.Hidden;
         }
 
         private void ChooseButtonClick(object sender, RoutedEventArgs e)
@@ -44,7 +48,7 @@ namespace IPOW
 
             OpenFileDialog openFileDialog = new OpenFileDialog
             {
-                InitialDirectory = "c:\\Development\\C#\\",
+                InitialDirectory = "c:\\",
                 Filter = "All files (*.*)|*.*|Word files (*.docx)|*.docx",
                 FilterIndex = 2,
                 RestoreDirectory = true
@@ -74,9 +78,59 @@ namespace IPOW
         private void RunButtonClick(object sender, RoutedEventArgs e)
         {
             List<string> patterns = this.GetSelectedOptionsPatterns();
-            AnonymizationManager.AnonymizeWithSave(fileTextbox.Text, patterns, "C:\\Development\\C#\\test.docx");
+            string targetFilename = CreateTargetFilename(fileTextbox.Text);
+
+            AnonymizationManager.AnonymizeWithSave(fileTextbox.Text, patterns, targetFilename);
             fileTextbox.Text = "";
             runButton.IsEnabled = false;
+            MessageBox.Show("File was successfully anonymized", "Word Files Anonymization");
+        }
+
+        private void CustomSaveCheckboxClick(object sender, RoutedEventArgs e)
+        {
+            if (customTargetCheckbox.IsChecked == true)
+            {
+                fileTargetTextbox.Visibility = Visibility.Visible;
+                chooseDestButton.Visibility = Visibility.Visible;
+            } 
+            else
+            {
+                fileTargetTextbox.Visibility = Visibility.Hidden;
+                chooseDestButton.Visibility = Visibility.Hidden;
+            }
+        }
+
+        private void ChooseDestButtonClick(object sender, RoutedEventArgs e)
+        {
+            SaveFileDialog saveFileDialog = new SaveFileDialog
+            {
+                InitialDirectory = "c:\\",
+                Filter = "All files (*.*)|*.*|Word files (*.docx)|*.docx",
+                FilterIndex = 2,
+                RestoreDirectory = true
+            };
+
+            if (saveFileDialog.ShowDialog() == true)
+            {
+                string fileName = saveFileDialog.FileName;
+                fileTargetTextbox.Text = fileName;
+            }
+        }
+
+        private string CreateTargetFilename(string source)
+        {
+            if (customTargetCheckbox.IsChecked == true && fileTargetTextbox.Text != null && fileTargetTextbox.Text.Trim() != "")
+            {
+                return fileTargetTextbox.Text;
+            }
+
+            int lastSlashIndex = source.LastIndexOf('\\');
+            string filename = source.Substring(lastSlashIndex + 1);
+            string directory = source.Substring(0, lastSlashIndex);
+            string filenameWithoutExtension = filename.Substring(0, filename.LastIndexOf('.'));
+            string extension = filename.Substring(filename.LastIndexOf('.'));
+
+            return directory + "\\" + filenameWithoutExtension + "-anonymized" + extension;
         }
     }
 }

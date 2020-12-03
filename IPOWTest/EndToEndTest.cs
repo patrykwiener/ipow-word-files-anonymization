@@ -12,23 +12,23 @@ namespace IPOWTest
         {
         }
 
-        [Test, TestCaseSource("AnonymizationTestSource")]
-        public void ShouldAnonymizeContent(string content, string replacement, List<string> unwantedTokens)
-        {
-            DocumentAnonymizer anonymizer = new DocumentAnonymizer();
+        //[Test, TestCaseSource("AnonymizationTestSource")]
+        //public void ShouldAnonymizeContent(string content, string replacement, List<string> unwantedTokens)
+        //{
+        //    DocumentAnonymizer anonymizer = new DocumentAnonymizer();
 
-            string anonymizedContent = anonymizer.anonymize(content, replacement);
+        //    string anonymizedContent = anonymizer.anonymize(content, replacement);
 
-            assertDoesNotContain(anonymizedContent, unwantedTokens);
-        }
+        //    assertDoesNotContain(anonymizedContent, unwantedTokens);
+        //}
 
-        private void assertDoesNotContain(string anonymizedContent, List<string> unwantedTokens)
-        {
-            unwantedTokens.ForEach(token =>
-            {
-                Assert.IsFalse(anonymizedContent.Contains(token));
-            });
-        }
+        //private void assertDoesNotContain(string anonymizedContent, List<string> unwantedTokens)
+        //{
+        //    unwantedTokens.ForEach(token =>
+        //    {
+        //        Assert.IsFalse(anonymizedContent.Contains(token));
+        //    });
+        //}
 
 
         public static IEnumerable<TestCaseData> AnonymizationTestSource()
