@@ -1,6 +1,7 @@
 ﻿using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -23,6 +24,7 @@ namespace IPOW
     public partial class MainWindow : Window
     {
 
+        private readonly Dictionary<ComboBoxItem, Func<IAlgorithm>> algorithms;
         private readonly Dictionary<CheckBox, string> checkboxMappings;
 
 
@@ -36,6 +38,12 @@ namespace IPOW
                 { birthDateCheckbox, PatternsModel.BIRTH_DATE},
                 { emailCheckbox, PatternsModel.EMAIL},
                 { phoneNoCheckbox, PatternsModel.PHONE_NUMBER},
+            };
+
+            algorithms = new Dictionary<ComboBoxItem, Func<IAlgorithm>>()
+            {
+                { algSimplePattern, () => new SimplePatternsAlgorithm(GetSelectedOptionsPatterns()) },
+                { algNameScan, () => new NameScanAlgorithm() }
             };
 
             customTargetCheckbox.IsChecked = false;
@@ -77,10 +85,12 @@ namespace IPOW
 
         private void RunButtonClick(object sender, RoutedEventArgs e)
         {
+            var algorithmProvider = algorithms[(ComboBoxItem) cbAlgorithm.SelectedItem];
+
             List<string> patterns = this.GetSelectedOptionsPatterns();
             string targetFilename = CreateTargetFilename(fileTextbox.Text);
 
-            AnonymizationManager.AnonymizeWithSave(fileTextbox.Text, patterns, targetFilename);
+            AnonymizationManager.AnonymizeWithSave(fileTextbox.Text, algorithmProvider.Invoke(), targetFilename);
             fileTextbox.Text = "";
             runButton.IsEnabled = false;
             MessageBox.Show("File was successfully anonymized", "Word Files Anonymization");
