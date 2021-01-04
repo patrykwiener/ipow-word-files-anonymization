@@ -17,7 +17,7 @@ namespace IPOW
 
         public NameScanAlgorithm()
         {
-            names = new List<string>(File.ReadAllText($"Resources/{NAMES_FILENAME}").Split("\n"));
+            names = new List<string>(File.ReadAllText($"Resources/{NAMES_FILENAME}").Replace("\r", "").Split("\n"));
         }
 
         public void Anonymize(DocX doc)
