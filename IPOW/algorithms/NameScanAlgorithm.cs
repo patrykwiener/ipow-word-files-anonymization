@@ -7,17 +7,16 @@ using Xceed.Words.NET;
 namespace IPOW
 {
 
-    class NameScanAlgorithm : IAlgorithm
+    class NameScanAlgorithm : ScanAlgorithm, IAlgorithm
     {
         private const string NAMES_FILENAME = "imiona_polskie.csv";
         private const string UPPERCASE_LETTERS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-        private const string SANITIZE_CHARACTERS = ".,;";
 
         private readonly List<string> names;
 
         public NameScanAlgorithm()
         {
-            names = new List<string>(File.ReadAllText($"Resources/{NAMES_FILENAME}").Replace("\r", "").Split("\n"));
+            names = ReadResourcesCSVFile(NAMES_FILENAME);
         }
 
         public void Anonymize(DocX doc)
@@ -42,21 +41,6 @@ namespace IPOW
                 }
             }
         }
-
-        private string[] ExtractWords(DocX doc)
-        {
-            List<string> words = new List<string>();
-
-            foreach (var element in doc.Xml.Elements())
-            {
-                var wordsInElement = element.Value.Split((char[])null)
-                    .Where(w => w.Trim().Length > 0);
-                words.AddRange(wordsInElement);
-            }
-
-            return words.ToArray();
-        }
-
         private bool IsSurname(string nextWord)
         {
             if (nextWord.Length < 2)
@@ -80,14 +64,5 @@ namespace IPOW
             doc.ReplaceText(replaceRegex, _ => replacement);
         }
 
-        private string Sanitize(string input)
-        {   
-            foreach (var replace in SANITIZE_CHARACTERS)
-            {
-                input = input.Replace(replace.ToString(), "");
-            }
-
-            return input;
-        }
     }
 }

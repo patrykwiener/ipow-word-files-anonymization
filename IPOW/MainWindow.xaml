@@ -18,7 +18,7 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="1*"/>
             <RowDefinition Height="5*"/>
-            <RowDefinition Height="5*"/>
+            <RowDefinition Height="7*"/>
             <RowDefinition Height="5*"/>
             <RowDefinition Height="3*"/>
             <RowDefinition Height="1*"/>
@@ -51,6 +51,7 @@
                 <RowDefinition Height="3*"/>
                 <RowDefinition Height="2*"/>
                 <RowDefinition Height="2*"/>
+                <RowDefinition Height="2*"/>
             </Grid.RowDefinitions>
             <Grid.ColumnDefinitions>
                 <ColumnDefinition Width="1*" />
@@ -62,12 +63,14 @@
             <ComboBox Grid.Row="0" Grid.Column="2" Name="cbAlgorithm">
                 <ComboBoxItem IsSelected="True" Name="algSimplePattern">Simple pattern</ComboBoxItem>
                 <ComboBoxItem Name="algNameScan">Name scan</ComboBoxItem>
+                <ComboBoxItem Name="algCityScan">City scan</ComboBoxItem>
             </ComboBox>
             <Label Grid.Row="1" Grid.Column="1">Select options:</Label>
             <CheckBox Grid.Row="2" Grid.Column="1" Name="peselCheckbox">PESEL</CheckBox>
             <CheckBox Grid.Row="3" Grid.Column="1" Name="emailCheckbox">Email</CheckBox>
             <CheckBox Grid.Row="2" Grid.Column="2" Name="birthDateCheckbox">Birth Date</CheckBox>
             <CheckBox Grid.Row="3" Grid.Column="2" Name="phoneNoCheckbox">Phone Number</CheckBox>
+            <CheckBox Grid.Row="4" Grid.Column="1" Name="vehicleRegistrationCheckbox">Vehicle Registration Number</CheckBox>
         </Grid>
         <Grid Grid.Row="3" Grid.Column="1">
             <Grid.RowDefinitions>

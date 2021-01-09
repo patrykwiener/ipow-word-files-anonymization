@@ -8,10 +8,14 @@
 
   <ItemGroup>
     <None Remove="Resources\imiona_polskie.csv" />
+    <None Remove="Resources\miasta_polskie.csv" />
   </ItemGroup>
 
   <ItemGroup>
     <Content Include="Resources\imiona_polskie.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\miasta_polskie.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
   </ItemGroup>

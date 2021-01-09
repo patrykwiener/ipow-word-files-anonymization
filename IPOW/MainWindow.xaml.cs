@@ -26,12 +26,14 @@ namespace IPOW
                 { birthDateCheckbox, PatternsModel.BIRTH_DATE},
                 { emailCheckbox, PatternsModel.EMAIL},
                 { phoneNoCheckbox, PatternsModel.PHONE_NUMBER},
+                { vehicleRegistrationCheckbox, PatternsModel.VEHICLE_REGISTRATION_NUMBER }
             };
 
             algorithms = new Dictionary<ComboBoxItem, Func<IAlgorithm>>()
             {
                 { algSimplePattern, () => new SimplePatternsAlgorithm(GetSelectedOptionsPatterns()) },
-                { algNameScan, () => new NameScanAlgorithm() }
+                { algNameScan, () => new NameScanAlgorithm() },
+                { algCityScan, () => new CitiesScanAlgorithm() }
             };
 
             customTargetCheckbox.IsChecked = false;

@@ -9,7 +9,7 @@ namespace IPOW
         private string replacement;
         private List<string> patterns;
 
-        public SimplePatternsAlgorithm(List<string> patterns, string replacement = "***")
+        public SimplePatternsAlgorithm(List<string> patterns, string replacement = "[...]")
         {
             this.patterns = patterns;
             this.replacement = replacement;
